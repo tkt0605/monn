@@ -15,14 +15,15 @@ function mapToMonnUser(user: User): MonnUser {
 
 /**
  * 現在のセッションからユーザーを取得する。
+ * getUser() はサーバーで JWT を検証するため getSession() より安全。
  * 未ログインの場合は null を返す。
  */
 export async function fetchCurrentUser(): Promise<MonnUser | null> {
   const supabase = createClient();
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  return session?.user ? mapToMonnUser(session.user) : null;
+    data: { user },
+  } = await supabase.auth.getUser();
+  return user ? mapToMonnUser(user) : null;
 }
 
 /**

@@ -13,6 +13,7 @@ import {
   subscribeNotifications,
   markAsRead,
 } from "@/lib/notifications";
+import { sanitizeUrl } from "@/lib/sanitize";
 import type {
   MonnUser,
   AppNotification,
@@ -105,7 +106,7 @@ function NotificationCard({
 
         {notification.href && (
           <Link
-            href={notification.href}
+            href={sanitizeUrl(notification.href ?? "#")}
             className="mt-2 inline-block text-xs text-blue-600 hover:underline"
           >
             詳細を見る →

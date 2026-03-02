@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { fetchCurrentUser, subscribeAuthState } from "@/lib/auth";
 import { resolveNavigation } from "@/lib/navigation";
 import { fetchProject } from "@/lib/gates";
+import { sanitizeUrl } from "@/lib/sanitize";
 import type { MonnUser, AuthStatus, Project, ProjectStatus } from "@/lib/types";
 
 const STATUS_CONFIG: Record<ProjectStatus, { label: string; badge: string }> = {
@@ -203,7 +204,7 @@ export default function ProjectDetailPage() {
                     {project.links.map((link) => (
                       <a
                         key={link.url}
-                        href={link.url}
+                        href={sanitizeUrl(link.url)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="px-4 py-2 border border-zinc-200 text-sm text-zinc-700 rounded-lg hover:bg-zinc-50 hover:border-zinc-400 transition-colors"

@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase";
+import { toUserMessage } from "@/lib/sanitize";
 import type {
   Project,
   ProjectSummary,
@@ -102,7 +103,7 @@ export async function createProject(
     .select()
     .single();
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(toUserMessage(error, "プロジェクトの作成に失敗しました。"));
   return rowToProject(data as Record<string, unknown>);
 }
 
@@ -132,7 +133,7 @@ export async function updateProject(
     .select()
     .single();
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(toUserMessage(error, "プロジェクトの更新に失敗しました。"));
   return rowToProject(data as Record<string, unknown>);
 }
 
@@ -140,5 +141,5 @@ export async function updateProject(
 export async function deleteProject(id: string): Promise<void> {
   const supabase = createClient();
   const { error } = await supabase.from("projects").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(toUserMessage(error, "プロジェクトの削除に失敗しました。"));
 }

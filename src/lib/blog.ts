@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase";
+import { toUserMessage } from "@/lib/sanitize";
 import type { BlogPost, BlogPostSummary, BlogPostStatus } from "@/lib/types";
 
 // ── 内部ヘルパー ──────────────────────────────────────────────────────────────
@@ -93,7 +94,7 @@ export async function createBlogPost(
     .select()
     .single();
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(toUserMessage(error, "記事の作成に失敗しました。"));
   return rowToPost(data as Record<string, unknown>);
 }
 
@@ -119,7 +120,7 @@ export async function updateBlogPost(
     .select()
     .single();
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(toUserMessage(error, "記事の更新に失敗しました。"));
   return rowToPost(data as Record<string, unknown>);
 }
 
@@ -127,5 +128,5 @@ export async function updateBlogPost(
 export async function deleteBlogPost(id: string): Promise<void> {
   const supabase = createClient();
   const { error } = await supabase.from("blog_posts").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(toUserMessage(error, "記事の削除に失敗しました。"));
 }

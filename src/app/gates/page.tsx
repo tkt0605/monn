@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { fetchCurrentUser, subscribeAuthState } from "@/lib/auth";
 import { resolveNavigation } from "@/lib/navigation";
 import { fetchProjects } from "@/lib/gates";
+import { sanitizeUrl } from "@/lib/sanitize";
 import type {
   MonnUser,
   AuthStatus,
@@ -110,7 +111,7 @@ function ProjectCard({
           {project.links.slice(0, 3).map((link) => (
             <a
               key={link.url}
-              href={link.url}
+              href={sanitizeUrl(link.url)}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs text-zinc-500 border border-zinc-200 px-2.5 py-1 rounded-full hover:bg-zinc-50 hover:text-zinc-900 transition-colors"
