@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "check-all": "npm run lint && tsc --noEmit && npm run test && npm audit"
   },
   "dependencies": {
     "@supabase/ssr": "^0.8.0",
