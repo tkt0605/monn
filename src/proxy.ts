@@ -5,8 +5,9 @@ import type { NextRequest } from "next/server";
 /**
  * サーバーサイドで認証状態を検証し、未認証ならログインページへリダイレクトする。
  * クライアント JS に依存しないため、クライアントサイドガードより確実。
+ * Next.js 16 では middleware.ts → proxy.ts に移行し、関数名も proxy に変更が必要。
  */
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   let response = NextResponse.next({
     request: { headers: request.headers },
   });
