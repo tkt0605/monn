@@ -267,9 +267,9 @@ export default function HomePage() {
             <div onClick={() => setIsUserMenuOpen(!isUserMenuOpen)} ref={userMenuRef} className="w-8 h-8 rounded-full bg-zinc-200 flex items-center justify-center text-xs font-semibold text-zinc-600 select-none">
               {user?.displayName?.[0] ?? user?.email?.[0]?.toUpperCase() ?? "?"}
               {isUserMenuOpen && (
-                <div className="absolute p-4 mt-30 w-56 bg-white rounded-lg shadow-lg border border-zinc-200">
+                <div className="absolute p-4 md:right-160 md:translate-x-1/2 right-0 mt-41 w-56 bg-white rounded-lg shadow-lg border border-zinc-200">
                   <button className="block w-full text-left px-3 py-2 text-sm text-blue-600 hover:bg-zinc-100 transition-colors rounded-full">
-                    {user?.displayName ?? user?.email}
+                    {user?.displayName ?? user?.email?.split("@")[0] ?? "..."}
                   </button>
                   <button onClick={logout} className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-zinc-100 transition-colors rounded-full">
                     ログアウト
