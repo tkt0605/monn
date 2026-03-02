@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { fetchCurrentUser, subscribeAuthState } from "@/lib/auth";
+import { fetchCurrentUser, subscribeAuthState, signOut } from "@/lib/auth";
 import { resolveGreeting } from "@/lib/greeting";
 import { resolveNavigation } from "@/lib/navigation";
 import {
@@ -138,7 +138,26 @@ export default function HomePage() {
     "idle"
   );
   const [greeting, setGreeting] = useState(resolveGreeting(new Date()));
+  const userMenuRef = useRef <HTMLDivElement>(null);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const logout = async(): Promise<void> =>{
+    await signOut();
+    router.replace("/");
+  };
 
+  useEffect(() =>{
+    const handleClickOutSide = (e: MouseEvent) =>{
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+    if (isUserMenuOpen){
+      document.addEventListener('mousedown', handleClickOutSide);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutSide);
+    }
+  }, [isUserMenuOpen]);
   // 挨拶を毎分更新（日付が変わっても正しい時間帯を表示するため）
   useEffect(() => {
     const timer = setInterval(
@@ -245,8 +264,18 @@ export default function HomePage() {
               )}
             </button>
 
-            <div className="w-8 h-8 rounded-full bg-zinc-200 flex items-center justify-center text-xs font-semibold text-zinc-600 select-none">
+            <div onClick={() => setIsUserMenuOpen(!isUserMenuOpen)} ref={userMenuRef} className="w-8 h-8 rounded-full bg-zinc-200 flex items-center justify-center text-xs font-semibold text-zinc-600 select-none">
               {user?.displayName?.[0] ?? user?.email?.[0]?.toUpperCase() ?? "?"}
+              {isUserMenuOpen && (
+                <div className="absolute p-4 mt-30 w-56 bg-white rounded-lg shadow-lg border border-zinc-200">
+                  <button className="block w-full text-left px-3 py-2 text-sm text-blue-600 hover:bg-zinc-100 transition-colors rounded-full">
+                    {user?.displayName ?? user?.email}
+                  </button>
+                  <button onClick={logout} className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-zinc-100 transition-colors rounded-full">
+                    ログアウト
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

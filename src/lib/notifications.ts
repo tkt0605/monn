@@ -32,8 +32,8 @@ export async function fetchNotifications(
   let query = supabase
     .from("notifications")
     .select("*")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
+    // .eq("user_id", userId)
+    .order("created_at", { ascending: true });
 
   if (options?.onlyUnread) query = query.eq("is_read", false);
   if (options?.limit) query = query.limit(options.limit);
