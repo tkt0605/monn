@@ -32,7 +32,7 @@ export async function fetchNotifications(
   let query = supabase
     .from("notifications")
     .select("*")
-    // .eq("user_id", userId)
+    .eq("user_id", userId)
     .order("created_at", { ascending: true });
 
   if (options?.onlyUnread) query = query.eq("is_read", false);
@@ -76,7 +76,7 @@ export function subscribeNotifications(
         event: "INSERT",
         schema: "public",
         table: "notifications",
-        filter: `user_id=eq.${userId}`,
+        // filter: `user_id=eq.${userId}`,
       },
       (payload) =>
         callback(rowToNotification(payload.new as Record<string, unknown>))
