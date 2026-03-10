@@ -52,7 +52,7 @@ export interface ResolvedNavigation {
 }
 
 // ── 通知 ────────────────────────────────────────────────────────────────────
-export type NotificationType = "system" | "gates" | "mention" | "update";
+export type NotificationType = "system" | "gates" | "mention" | "update" | "blog";
 
 /**
  * DB の notifications テーブルの行と 1:1 対応。

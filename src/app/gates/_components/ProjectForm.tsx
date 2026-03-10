@@ -91,8 +91,21 @@ export default function ProjectForm({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
+
+    // 「追加」ボタンを押さずに送信した場合でも入力中のリンクを自動確定する
+    const finalValues = { ...values };
+    const { label, url } = linkInput;
+    if (label.trim() && url.trim()) {
+      finalValues.links = [
+        ...values.links,
+        { label: label.trim(), url: url.trim() },
+      ];
+      setLinkInput({ label: "", url: "" });
+    }
+
     startTransition(async () => {
       try {
+        // await onSubmit(finalValues);
         await onSubmit(values);
       } catch (err) {
         setErrorMsg(err instanceof Error ? err.message : "エラーが発生しました。");

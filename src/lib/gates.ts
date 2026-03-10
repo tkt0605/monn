@@ -10,6 +10,20 @@ import type {
 
 // ── 内部ヘルパー ──────────────────────────────────────────────────────────────
 
+/**
+ * jsonb カラムの links を安全に配列へ変換する。
+ * - すでに配列 → そのまま使用
+ * - JSON 文字列（過去に誤って stringify して保存したもの）→ parse
+ * - null / undefined → 空配列
+ */
+function parseLinks(raw: unknown): ProjectLink[] {
+  if (Array.isArray(raw)) return raw as ProjectLink[];
+  if (typeof raw === "string") {
+    try { return JSON.parse(raw) as ProjectLink[]; } catch { return []; }
+  }
+  return [];
+}
+
 function rowToProject(row: Record<string, unknown>): Project {
   return {
     id: row.id as string,
@@ -19,7 +33,7 @@ function rowToProject(row: Record<string, unknown>): Project {
     thumbnailUrl: (row.thumbnail_url as string) ?? null,
     status: row.status as ProjectStatus,
     techStack: (row.tech_stack as string[]) ?? [],
-    links: (row.links as ProjectLink[]) ?? [],
+    links: parseLinks(row.links),
     createdAt: row.created_at as string,
     updatedAt: row.updated_at as string,
   };

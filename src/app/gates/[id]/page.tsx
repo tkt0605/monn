@@ -209,7 +209,7 @@ export default function ProjectDetailPage() {
                         rel="noopener noreferrer"
                         className="px-4 py-2 border border-zinc-200 text-sm text-zinc-700 rounded-lg hover:bg-zinc-50 hover:border-zinc-400 transition-colors"
                       >
-                        {link.label} ↗
+                        {link.url} ↗
                       </a>
                     ))}
                   </div>

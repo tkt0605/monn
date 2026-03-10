@@ -76,7 +76,7 @@ export function subscribeNotifications(
         event: "INSERT",
         schema: "public",
         table: "notifications",
-        // filter: `user_id=eq.${userId}`,
+        filter: `user_id=eq.${userId}`,
       },
       (payload) =>
         callback(rowToNotification(payload.new as Record<string, unknown>))

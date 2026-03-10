@@ -30,6 +30,7 @@ const TYPE_STYLES: Record<
   gates:   { border: "border-l-blue-400",  badge: "bg-blue-50 text-blue-600",    label: "gates"          },
   mention: { border: "border-l-amber-400", badge: "bg-amber-50 text-amber-600",  label: "メンション"     },
   update:  { border: "border-l-green-400", badge: "bg-green-50 text-green-600",  label: "アップデート"   },
+  blog:    { border: "border-l-purple-400", badge: "bg-purple-50 text-purple-600",  label: "ブログ"       },
 };
 
 /** ISO 8601 → 日本語の相対時刻表記 */
@@ -205,7 +206,7 @@ export default function HomePage() {
 
     // user.id が変わった（アカウント切り替え）時のみ再購読する
     return () => unsubscribe();
-  }, [user?.id]);
+  },[user?.id]);
 
   const handleMarkAsRead = useCallback(async (id: string) => {
     await markAsRead(id);
@@ -269,7 +270,7 @@ export default function HomePage() {
               {isUserMenuOpen && (
                 <div className="absolute p-4 md:right-160 md:translate-x-1/2 right-0 mt-41 w-56 bg-white rounded-lg shadow-lg border border-zinc-200">
                   <button className="block w-full text-left px-3 py-2 text-sm text-blue-600 hover:bg-zinc-100 transition-colors rounded-full">
-                    {user?.displayName ?? user?.email?.split("@")[0] ?? "..."}
+                    {user?.displayName ?? user?.email?.slice(0, 21) }
                   </button>
                   <button onClick={logout} className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-zinc-100 transition-colors rounded-full">
                     ログアウト
